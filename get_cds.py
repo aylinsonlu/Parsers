@@ -3,7 +3,7 @@ import os
 from pprint import pprint
 import sys
 
-def get_cds(gtf_file,gene,genome_file):
+def get_all_isoform_cds(gtf_file,gene,genome_file):
     cds_dict = {}
     with open(gtf_file,'r') as f:
         for line in f:
@@ -34,7 +34,16 @@ def get_cds(gtf_file,gene,genome_file):
                             else:
                                 cds_dict[gene_id]['transcripts'][transcript_id].append({'exon':exon,'start':start,'stop':stop,'seq':seq})
                         
-    print(cds_dict)
     return cds_dict
+
+def get_single_transcript_cds(cds_dict,transcript_id):
+    cds = ""
+    for gene in cds_dict.keys():
+        for transcript in cds_dict[gene]['transcripts'].keys():
+            if transcript == transcript_id:
+                for exons in cds_dict[gene]['transcripts'][transcript_id]:
+                    cds +=  exons['seq']
+
+    return cds.upper()
 
 
