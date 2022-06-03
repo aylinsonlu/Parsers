@@ -27,13 +27,14 @@ def get_all_isoform_cds(gtf_file,gene,genome_file):
                             output = os.popen("samtools faidx " + genome_file + " " +chrm + ":" + start + "-" + stop).read().split("\n")
                             seq = "".join(output[1:])
                         if not cds_dict:
-                            cds_dict[gene_id] = {'chrm':chrm,'strand':strand,'transcripts':{transcript_id:[{'exon':exon,'start':start,'stop':stop,'seq':seq}]}}
+                            cds_dict[gene_id] = {'chrm':chrm,'strand':strand,'transcripts':{transcript_id:[{'exon':exon,'coordinates':(start,stop),'seq':seq}]}}
                         else:
                             if transcript_id not in cds_dict[gene_id]['transcripts'].keys():
-                                cds_dict[gene_id]['transcripts'].update({transcript_id:[{'exon':exon,'start':start,'stop':stop,'seq':seq}]})
+                                cds_dict[gene_id]['transcripts'].update({transcript_id:[{'exon':exon,'coordinates':(start,stop),'seq':seq}]})
                             else:
-                                cds_dict[gene_id]['transcripts'][transcript_id].append({'exon':exon,'start':start,'stop':stop,'seq':seq})
-                        
+                                cds_dict[gene_id]['transcripts'][transcript_id].append({'exon':exon,'coordinates':(start,stop),'seq':seq})
+
+               
     return cds_dict
 
 def get_single_transcript_cds(cds_dict,transcript_id):
@@ -43,7 +44,10 @@ def get_single_transcript_cds(cds_dict,transcript_id):
             if transcript == transcript_id:
                 for exons in cds_dict[gene]['transcripts'][transcript_id]:
                     cds +=  exons['seq']
-
+                  
+    
+  
     return cds.upper()
+
 
 
