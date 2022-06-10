@@ -19,8 +19,8 @@ def get_all_isoform_cds(gtf_file,genome_file):
                     start = fields[3]
                     stop = fields[4]
                     transcript_id = attributes.split("transcript_id ")[1].split(";")[0]
-                    gene_bio_type = attributes.split("transcript_biotype ")[1].split(";")[0]
-                    if gene_bio_type == "protein_coding":
+                    transcript_bio_type = attributes.split("transcript_biotype ")[1].split(";")[0]
+                    if transcript_bio_type == "protein_coding":
                         if strand=="-":                            
                             output = os.popen("samtools faidx " + genome_file + " " +chrm + ":" + start + "-" + stop + " -i").read().split("\n")
                             seq = "".join(output[1:])
